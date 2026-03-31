@@ -1,0 +1,5 @@
+# requirements.txt
+webob
+whitenoise
+jinja2
+routers

@@ -1,0 +1,8 @@
+<h1>Редактирование статьи {{article.name}}</h1>
+<a href="/articles">Все статьи</a>
+
+<form action="" method="post">
+    <label> Заголовок статьи </label><br>
+    <textarea name="name" value= {{article.get_name()}}></textarea>
+    <input type="submit" value="Обновить">
+</form>
