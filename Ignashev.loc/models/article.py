@@ -39,6 +39,7 @@ class Article(ActiveRecordEntity):
     @staticmethod
     def get_table_name():
         return 'table1'
+        
 
     # def find_all(cls):
     #     db = Db()

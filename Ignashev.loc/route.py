@@ -3,6 +3,8 @@ from controllers.test_controller import TestController
 from controllers.article_controller import ArticlesController
 
 routes = {
+    r'^/article/add$': [ArticlesController, ArticlesController.add],
+    r'^/article/(\d+)/delete$': [ArticlesController, ArticlesController.delete],
     r'^/article/(\d+)/edit$': [ArticlesController, ArticlesController.edit],
     r'^/article/(\d+)$': [ArticlesController, ArticlesController.view],
     r'^/articles$': [ArticlesController, ArticlesController.index],
