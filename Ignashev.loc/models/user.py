@@ -3,17 +3,15 @@
   # from services.db import Db
 
 from models.active_record_entity import ActiveRecordEntity
-from models.user import User
 
-class Article(ActiveRecordEntity):
-    _id = None
-    _author_id = None
-    _name = None
-    _text = None
+class User(ActiveRecordEntity):
+    _nickname = None
+    _email = None
+    _is_confirmed = None
+    _role = None
+    _password_hash = None
+    _auth_token = None
     _created_at = None
-
-    def get_author(self):
-        return User.get_by_id(self._id)
 
     def get_author_id(self):
         return self._author_id
@@ -39,10 +37,29 @@ class Article(ActiveRecordEntity):
     def set_created_at(self,_created_at):
         self._created_at = _created_at
 
-    @staticmethod
-    def get_table_name():
-        return 'table1'
-        
+    def get_nickname(self):
+        return self._nickname
+    
+    def get_email(self):
+        return self._email
+    
+    def get_role(self):
+        return self._role
+    
+    def get_password_hash(self):
+        return self._auth_token
+    
+    def get_created_at(self):
+        return self._created_at
+    
+    def set_nickname(self, nickname):
+        self._nickname = nickname
+
+    def set_email(self, email):
+        self._email = email
+
+    def set_role(self, role):
+        self._role = role       
 
     # def find_all(cls):
     #     db = Db()

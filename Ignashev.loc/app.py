@@ -36,6 +36,7 @@ import route
 
 from webob import Request, Response
 from whitenoise import WhiteNoise
+from exceptions import NotFoundExceptions
 
 class API:
     def __init__(self, static_dir="assets"):
@@ -68,7 +69,7 @@ class API:
                 self.default_response(response)
         # response.text = f"ПРивет, ты запростл страницу {requset_url}"
 
-        except NotFoundException as e:
+        except NotFoundExceptions as e:
             response.status_code = 404
             response.text = View('default').render_html
             ('errors/404.html', {'error' : e})
