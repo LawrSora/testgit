@@ -1,10 +1,12 @@
 
 
   # from services.db import Db
-
+import re
 from models.active_record_entity import ActiveRecordEntity
 from exceptions import InvalidArgumentException
 from email_validator import validate_email, EmailNotValidError
+import hashlib
+import random
 
 import re
 
@@ -65,12 +67,19 @@ class User(ActiveRecordEntity):
     def set_role(self, role):
         self._role = role
 
+    def refresh_auth_token(self):
+        self._auth_token = hashlib.sha1(random.randbytes(100)).hexdigets()
+        + hashlib.sha1(random.randbytes(100)).hexdigets()
+
     def sign_up(user_data):
         if not user_data['nickname']:
             raise InvalidArgumentException('Не передан логин')
         
         if re.search(r'^[a-zA-Z0-9]+$', user_data['nickname']) is None:
             raise InvalidArgumentException('Логин может состоять только из символов латинского алфавита и цифр')
+        
+        if __class__.find_one_by_column('nickname', user_data['nickname']):
+            raise InvalidArgumentException('Логин уже существует')
         
         if not user_data['email']:
             raise InvalidArgumentException('Не передан email')
@@ -79,8 +88,21 @@ class User(ActiveRecordEntity):
         except EmailNotValidError as e:
             raise InvalidArgumentException('Неверный email')
         
+        if __class__.find_one_by_column('email', user_data['email']):
+            raise InvalidArgumentException('Email уже существует')
+        
         if not user_data['password']:
             raise InvalidArgumentException('Не передан пароль')
+        
+        user = User()
+        user._nickname = user_data['nickname']
+        user._email = user_data['email']
+        user._is_confirmed = True
+        user._role = 'user'
+        user._password_hadh = generate_password_hash(user_data['password'])
+        user.refresh_auth_token()
+        user.save()
+        return user
         
     @staticmethod
     def get_table_name():

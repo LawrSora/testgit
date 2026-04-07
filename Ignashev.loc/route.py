@@ -4,6 +4,7 @@ from controllers.article_controller import ArticlesController
 from controllers.user_controller import UsersController
 
 routes = {
+    r'^/user/register$': [UsersController, UsersController.sign_in],
     r'^/user/register$': [UsersController, UsersController.sign_up],
     r'^/article/add$': [ArticlesController, ArticlesController.add],
     r'^/article/(\d+)/delete$': [ArticlesController, ArticlesController.delete],

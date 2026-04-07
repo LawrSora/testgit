@@ -42,6 +42,17 @@ class ActiveRecordEntity(metaclass = ABCMeta):
       db.query(sql, columns2values, self.__class__)
       db.connection.commit()
       db.connection.close()
+
+  @classmethod
+  def find_one_by_column(cls, column_name, value):
+    db = Db()
+    table_name = cls.get_table_name()
+    result =  db.query(f"SELECT * FROM `{table_name}` WHERE `{column_name}` = :value Limit 1;", {'value': value}, {}, cls)
+    if result != []:
+      result = result[0]
+    else:
+      result = None
+    return result  
       
   @classmethod
   def find_all(cls):

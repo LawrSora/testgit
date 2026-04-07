@@ -17,3 +17,7 @@ class UsersController(Controller):
                response.text = self.view.render_html('users/sign_up.html',
                {'title':'MVC framework - регистрация', 'error' : e})
                return 
+    
+    def sign_in(self, request, response):
+        response.text = self.view.render_html('users/sign_in.html',
+        {'title':'MVC framework - вход', 'error' : e})
