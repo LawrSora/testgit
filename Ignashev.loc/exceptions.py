@@ -1,2 +1,5 @@
-class NotFoundExceptions(Exception):
+class NotFoundException(Exception):
+    pass
+
+class InvalidArgumentException(Exception):
     pass

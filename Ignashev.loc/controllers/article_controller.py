@@ -1,7 +1,7 @@
 from controllers.controller import Controller
 from models.article import Article
 from models.user import User
-from exceptions import NotFoundExceptions
+from exceptions import NotFoundException
 
 
 class ArticlesController(Controller):
@@ -18,7 +18,7 @@ class ArticlesController(Controller):
     def view(self, request, response, id):
        article = Article.get_by_id(id)
        if article is None:
-           raise NotFoundExceptions('статья не найдена')
+           raise NotFoundException('статья не найдена')
        user = User.get_by_id(article.get_by_id)
        response.text = self.view.render_html('articles/view.html', 
       {

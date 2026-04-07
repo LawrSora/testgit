@@ -3,6 +3,10 @@
   # from services.db import Db
 
 from models.active_record_entity import ActiveRecordEntity
+from exceptions import InvalidArgumentException
+from email_validator import validate_email, EmailNotValidError
+
+import re
 
 class User(ActiveRecordEntity):
     _nickname = None
@@ -59,12 +63,25 @@ class User(ActiveRecordEntity):
         self._email = email
 
     def set_role(self, role):
-        self._role = role       
+        self._role = role
 
-    # def find_all(cls):
-    #     db = Db()
-    #     return db.query("SELECT * FROM 'articles'",{},cls)
-    #     # print(items)
-    # def get_by_id(id,cls):
-    #     db = Db()
-    #     return db.query(f"SELECT * FROM 'articles' WHERE id={id}",{},cls)[0]
+    def sign_up(user_data):
+        if not user_data['nickname']:
+            raise InvalidArgumentException('Не передан логин')
+        
+        if re.search(r'^[a-zA-Z0-9]+$', user_data['nickname']) is None:
+            raise InvalidArgumentException('Логин может состоять только из символов латинского алфавита и цифр')
+        
+        if not user_data['email']:
+            raise InvalidArgumentException('Не передан email')
+        try:
+            validate_email(user_data['email'])
+        except EmailNotValidError as e:
+            raise InvalidArgumentException('Неверный email')
+        
+        if not user_data['password']:
+            raise InvalidArgumentException('Не передан пароль')
+        
+    @staticmethod
+    def get_table_name():
+        return 'users'

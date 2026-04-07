@@ -1,5 +1,9 @@
 <h1>Регистрация пользователя</h1>
 
+{% if error %}
+<p style="background-color: red;">{{ error }}</p>
+{% endif %}
+
 <div>
     <form action="" method="post">
         <div>
