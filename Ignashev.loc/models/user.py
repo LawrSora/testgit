@@ -94,6 +94,23 @@ class User(ActiveRecordEntity):
         if not user_data['password']:
             raise InvalidArgumentException('Не передан пароль')
         
+    def sign_in(user_data):
+        if not user_data['nickname']:
+            raise InvalidArgumentException('Не передан логин')
+        
+        if not user_data['password']:
+            raise InvalidArgumentException('Не передан пароль')
+        
+        user = User.find_one_by_column('nickname', user_data['nickname'])
+
+        if user is None:
+            raise InvalidArgumentException("Пользователь не найден")
+        if check_pasword_hash(user_data['password'], user.get_password_hash):
+            raise InvalidArgumentException('Неверный логин или пароль')
+        user.refresh_auth_token()
+        user.save()
+        return user
+        
         user = User()
         user._nickname = user_data['nickname']
         user._email = user_data['email']
